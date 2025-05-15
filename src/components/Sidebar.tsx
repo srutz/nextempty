@@ -1,5 +1,7 @@
 "use client"
 
+import { useAtom } from "@/hooks/Atoms";
+import { weatherAtom } from "@/hooks/GlobalStateWithAtoms";
 import { useGuiStore } from "@/hooks/GuiStateStore";
 import { motion } from "motion/react";
 
@@ -25,15 +27,18 @@ const variants = {
     }
 }
 
-
 export function Sidebar() {
     const { showSidebar } = useGuiStore()
+    const [ weather ] = useAtom(weatherAtom)
     return (
         <motion.div
             initial="closed"
             animate={showSidebar ? 'open' : 'closed'}
             className="bg-green-300 flex flex-col gap-1"
             variants={variants}>
+        <div className="flex gap-2 items-center">
+            Weather {weather}
+        </div>
     </motion.div>
     )
 }
