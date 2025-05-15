@@ -1,18 +1,21 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react"
+import { createContext, Dispatch, ReactNode, SetStateAction, use } from "react"
+import { useStateWithLocalStorage } from "./StateWthLocalStorage"
 
 export type ApplicationContextType = {
     username: string
 }
 
 const ApplicationContext = createContext<{ 
-    applicationContext: ApplicationContextType, 
-    setApplicationContext: Dispatch<SetStateAction<ApplicationContextType>>
+    applicationContext?: ApplicationContextType, 
+    setApplicationContext: Dispatch<SetStateAction<ApplicationContextType|undefined>>
 }|null>(null)
 
 export function ApplicationContextProvider({ children }: { children: ReactNode }) {
-    const [ applicationContext, setApplicationContext ] = useState<ApplicationContextType>({
-        username: ""
-    })
+    const [ applicationContext, setApplicationContext ] = useStateWithLocalStorage<ApplicationContextType>(
+        "applicationContext",
+        {
+            username: ""
+        })
     return (
         <ApplicationContext.Provider value={ { applicationContext, setApplicationContext } }>
             {children}
@@ -21,7 +24,7 @@ export function ApplicationContextProvider({ children }: { children: ReactNode }
 }
 
 export function useApplicationContext() {
-    const context = useContext(ApplicationContext)
+    const context = use(ApplicationContext)
     if (context === null) {
         throw new Error("useApplicationContext must be used within an ApplicationContextProvider")
     }
