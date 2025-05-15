@@ -1,7 +1,7 @@
 "use client"
 
 import { useAtom } from "@/hooks/Atoms"
-import { temperaturAtom as temperatureAtom, weatherAtom } from "@/hooks/GlobalStateWithAtoms"
+import { temperatureAtom, weatherAtom } from "@/hooks/GlobalStateWithAtoms"
 
 export function ToggleWeather() {
     const [ weather, setWeather ] = useAtom(weatherAtom)
