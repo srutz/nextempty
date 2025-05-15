@@ -16,24 +16,19 @@ export type AtomType<T> = {
 export function atom<T>(initialValue: T): AtomType<T> {
     let value = initialValue
     const listeners = new Set<(newValue: T) => void>()
-
     return {
         get: () => value,
         set: (newValue: T | ((prevValue: T) => T)) => {
-            if (typeof newValue === "function") {
+            if (typeof newValue === "function")
                 newValue = (newValue as any)(value) as T
-            }
-            if (value === newValue) {
+            if (Object.is(value, newValue))
                 return
-            }
             value = newValue
             listeners.forEach((listener) => listener(value))
         },
         subscribe: (listener: (newValue: T) => void) => {
             listeners.add(listener)
-            return () => {
-                listeners.delete(listener)
-            }
+            return () => listeners.delete(listener)
         },
     }
 }
