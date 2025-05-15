@@ -1,3 +1,5 @@
+export const dynamic = "force-static"
+
 import { Quote } from "@/components/Quote";
 import { Suspense } from "react";
 

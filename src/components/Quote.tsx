@@ -1,3 +1,4 @@
+export const dynamic = "force-static"
 
 /* server side quote component */
 export type Quote = {
@@ -12,12 +13,7 @@ export function delay(ms: number) {
 
 export async function Quote({ quoteId }: { quoteId: number }) {
     console.log("Rendering Quote", quoteId)
-    const r = await fetch(`https://dummyjson.com/quotes/${encodeURIComponent(quoteId)}`, {
-        next: {
-            revalidate: 3_600,
-        },
-        cache: "no-cache",
-    })
+    const r = await fetch(`https://dummyjson.com/quotes/${encodeURIComponent(quoteId)}`, { })
     const quote = await r.json() as Quote
     await delay(2_000 + Math.random() * 3_000)
     return (
