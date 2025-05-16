@@ -1,3 +1,4 @@
+import { QuoteViewer } from "./QuoteViewer"
 
 /* server side quote component */
 export type Quote = {
@@ -11,20 +12,20 @@ export function delay(ms: number) {
 }
 
 export async function Quote({ quoteId }: { quoteId: number }) {
+    //const p = await headers()
+    //console.log(Array.from(p.entries()))
     console.log("Rendering Quote", quoteId)
     const r = await fetch(`https://dummyjson.com/quotes/${encodeURIComponent(quoteId)}`, {
+        /*
         next: {
             revalidate: 3_600,
         },
         cache: "no-cache",
+        */
     })
-    const quote = await r.json() as Quote
     await delay(2_000 + Math.random() * 3_000)
-    return (
-        <div className="w-[600px] p-4 bg-white rounded-lg shadow-xl border border-gray-300">
-            <p className="text-sm">{quote.quote}</p>
-            <p className="text-xs text-gray-500">- {quote.author}</p>
-        </div>
-    )
+    //const quote = await r.json() as Quote
+    const quotePromise = r.json()
+    return <QuoteViewer quotePromise={quotePromise} />
 }
 
